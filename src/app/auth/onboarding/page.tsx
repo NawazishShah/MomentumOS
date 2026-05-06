@@ -29,8 +29,7 @@ export default function OnboardingPage() {
     setLoading(true);
     setError(null);
 
-    const { error } = await supabase
-      .from('profiles')
+    const { error } = await (supabase.from('profiles') as any)
       .update({
         full_name: fullName,
         timezone: timezone,

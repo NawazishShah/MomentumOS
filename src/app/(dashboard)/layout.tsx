@@ -38,9 +38,19 @@ export default async function DashboardLayout({
     .eq('id', user.id)
     .single();
 
+  const { count: taskCount } = await supabase
+    .from('tasks')
+    .select('*', { count: 'exact', head: true })
+    .eq('user_id', user.id)
+    .neq('status', 'done');
+
   return (
     <div className="flex min-h-screen">
-      <Sidebar />
+      <Sidebar 
+        taskCount={taskCount || 0} 
+        userEmail={user.email} 
+        userName={(profile as any)?.full_name} 
+      />
       <div className="flex-1 flex flex-col min-w-0">
         <Topbar userName={(profile as any)?.full_name || user.email} />
         <main className="flex-1 ml-60 mt-14 p-8 overflow-auto">
